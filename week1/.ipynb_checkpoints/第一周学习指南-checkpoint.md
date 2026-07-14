@@ -1,0 +1,822 @@
+﻿# 📚 第一周学习指南：Python 强化 + 数据科学工具入门
+
+---
+
+## 本周总览
+
+| 天数 | 主题 | 目标 |
+|------|------|------|
+| Day 1 | 环境搭建 + Python 热身 | 装好工具，复习基本数据类型 |
+| Day 2 | Python 核心语法 | 条件、循环、函数、异常处理 |
+| Day 3 | Numpy 基础 | 学会用数组替代普通列表 |
+| Day 4 | Pandas 入门 | 学会 DataFrame，能读 CSV |
+| Day 5 | Pandas 进阶 | 分组聚合、缺失值处理 |
+| Day 6 | 数据可视化 | 用 Matplotlib + Seaborn 画图 |
+| Day 7 | 综合实战：Titanic EDA | 跑通完整的数据分析流程 |
+
+---
+
+## 先搞懂这些术语（名词解释）
+
+> 如果你忘了这些词是啥意思，从这里开始看 👇
+
+| 术语 | 通俗解释 | 类比 |
+|------|---------|------|
+| **Python** | 一门编程语言，AI 领域最常用 | 像英语一样，是跟电脑交流的工具 |
+| **库/包（Library/Package）** | 别人写好的代码工具包，你直接拿来用 | 就像盖房子不用自己烧砖，有现成的 |
+| **Pandas** | Python 里处理表格数据的库 | 像 Excel 的超级升级版，用代码操作 |
+| **Numpy** | Python 里做数学计算的库 | 快速做加减乘除、矩阵运算 |
+| **Matplotlib** | Python 里画图的库 | 像 Excel 的图表功能 |
+| **Seaborn** | 基于 Matplotlib 的美观画图库 | 一键出好看的统计图 |
+| **scikit-learn** | Python 里的机器学习库 | 内置各种 AI 算法，直接调用 |
+| **DataFrame** | Pandas 里的表格数据结构 | 就是一张 Excel 表格 |
+| **EDA** | 探索性数据分析 | 拿到数据后先看看它长什么样 |
+| **Jupyter Notebook** | 一个写 Python 的交互式笔记本 | 像写实验报告，代码+结果+笔记混排 |
+
+---
+
+## 📅 Day 1：环境搭建 + Python 热身
+
+### 1.1 安装验证
+
+打开终端（PowerShell），依次运行：
+
+```powershell
+python -c "import pandas; print('pandas OK')"
+python -c "import matplotlib; print('matplotlib OK')"
+python -c "import sklearn; print('sklearn OK')"
+```
+
+> 如果报错 `No module named 'xxx'`，先运行：`pip install pandas matplotlib seaborn scikit-learn`
+
+### 1.2 启动 Jupyter Notebook
+
+```powershell
+jupyter notebook
+```
+
+会自动在浏览器打开一个页面，点右侧 `New → Python 3` 即可新建笔记本。
+
+### 1.3 Python 数据类型（速览）
+
+```python
+# === 基本类型 ===
+age = 25             # int（整数）
+price = 3.14         # float（小数）
+name = "小明"        # str（字符串，用引号包着）
+is_ok = True         # bool（布尔值，只有 True/False）
+nothing = None       # NoneType（空，啥也没有）
+
+# === 容器类型 ===
+# list（列表）—— 有序的集合，用 []
+fruits = ["苹果", "香蕉", "橘子"]
+print(fruits[0])     # 取第一个：苹果（索引从0开始）
+fruits.append("西瓜") # 追加
+print(len(fruits))   # 长度：4
+
+# dict（字典）—— 键值对，用 {}
+person = {"name": "张三", "age": 28, "city": "北京"}
+print(person["name"])   # 取值：张三
+print(person.keys())    # 所有键
+person["job"] = "分析师"  # 新增字段
+
+# tuple（元组）—— 不可变的列表，用 ()
+point = (10, 20)
+
+# set（集合）—— 无序不重复，用 {}
+tags = {"诈骗", "洗钱", "诈骗"}
+print(tags)          # {"诈骗", "洗钱"} 自动去重
+```
+
+### 1.4 今日练习
+
+在 Jupyter 里新建一个笔记本，照上面抄一遍，把 `person` 字典改成你自己的信息。
+
+---
+
+## 📅 Day 2：Python 核心语法
+
+### 2.1 条件判断
+
+```python
+score = 85
+
+if score >= 90:
+    print("优秀")
+elif score >= 80:
+    print("良好")      # ← 会走到这里
+else:
+    print("继续加油")
+
+# 多条件判断
+if score >= 80 and score < 90:
+    print("80-90之间")
+
+if score < 60 or score > 95:
+    print("特殊区间")
+```
+
+### 2.2 循环
+
+```python
+# for 循环 —— 遍历一个集合
+fruits = ["苹果", "香蕉", "橘子"]
+for f in fruits:
+    print(f"今天吃{f}")
+
+# range —— 生成数字序列
+for i in range(5):      # 0,1,2,3,4
+    print(i)
+
+for i in range(2, 6):   # 2,3,4,5
+    print(i)
+
+# while 循环 —— 条件满足就一直跑
+count = 0
+while count < 3:
+    print(f"第{count+1}次")
+    count += 1          # 别忘了加1，否则死循环
+```
+
+### 2.3 函数
+
+```python
+# 定义函数
+def greet(name):
+    """给某人打招呼"""    # 这叫文档字符串，解释函数用途
+    return f"你好，{name}！"
+
+# 调用函数
+msg = greet("小明")
+print(msg)
+
+# 多个参数
+def add(a, b):
+    return a + b
+
+result = add(3, 5)      # result = 8
+
+# 默认参数
+def say_hello(name, title="同学"):
+    print(f"{name}{title}，你好！")
+
+say_hello("小明")            # 小明同学，你好！
+say_hello("小明", "老师")    # 小明老师，你好！
+```
+
+### 2.4 列表推导式（一行顶三行）
+
+```python
+# 传统写法
+squares = []
+for i in range(10):
+    squares.append(i * i)
+
+# 列表推导式 —— 一行搞定
+squares = [i * i for i in range(10)]
+print(squares)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# 加条件
+even_squares = [i * i for i in range(10) if i % 2 == 0]
+print(even_squares)  # [0, 4, 16, 36, 64]
+```
+
+### 2.5 异常处理
+
+```python
+# 防止程序崩溃
+try:
+    num = int(input("请输入一个数字："))
+    result = 10 / num
+    print(f"10 / {num} = {result}")
+except ValueError:
+    print("你输入的不是数字！")
+except ZeroDivisionError:
+    print("不能除以0！")
+finally:
+    print("不管怎样都会执行这一段")
+```
+
+### 2.6 今日练习
+
+```python
+# 练习1：写一个函数 is_even(n)，判断n是否为偶数
+def is_even(n):
+    return n % 2 == 0
+
+print(is_even(4))  # True
+print(is_even(7))  # False
+
+# 练习2：用列表推导式，生成1-20中能被3整除的数的平方
+result = [n*n for n in range(1, 21) if n % 3 == 0]
+print(result)  # [9, 36, 81, 144, 225, 324]
+
+# 练习3：写一个函数，接收一个数字列表，返回最大值和最小值
+def find_min_max(nums):
+    return min(nums), max(nums)
+
+print(find_min_max([3, 7, 1, 9, 4]))  # (1, 9)
+```
+
+---
+
+## 📅 Day 3：Numpy 基础
+
+### 3.1 什么是 Numpy？
+
+NumPy 是 Python 做数值计算的核心库。它的核心是 **ndarray（N维数组）**。
+
+**为什么要用它？**
+- 比 Python 普通 list 快 50 倍（底层用 C 写的）
+- 支持矩阵运算、广播运算
+- 是 Pandas、scikit-learn、PyTorch 的基础
+
+```python
+import numpy as np   # 行业惯例：导入为 np
+
+# === 创建数组 ===
+arr1 = np.array([1, 2, 3, 4, 5])      # 一维数组
+arr2 = np.array([[1, 2], [3, 4]])      # 二维数组（矩阵）
+
+print(arr1)        # [1 2 3 4 5]
+print(arr2)        # [[1 2]
+                   #  [3 4]]
+
+# === 常用创建方式 ===
+zeros = np.zeros((3, 4))   # 3行4列的全0矩阵
+ones = np.ones((2, 3))      # 2行3列的全1矩阵
+range_arr = np.arange(10)   # [0 1 2 ... 9] 类似 range()
+lin_arr = np.linspace(0, 1, 5)  # [0. 0.25 0.5 0.75 1.] 等间隔
+random_arr = np.random.randn(3, 3)  # 标准正态分布的随机数
+```
+
+### 3.2 查看数组属性
+
+```python
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+print(arr.shape)     # (2, 3) —— 2行3列
+print(arr.ndim)      # 2 —— 维度数
+print(arr.size)      # 6 —— 总共多少个元素
+print(arr.dtype)     # int64 —— 数据类型
+```
+
+### 3.3 数组运算
+
+```python
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+print(a + b)      # [5 7 9]  对应位置相加
+print(a * b)      # [4 10 18] 对应位置相乘（注意：不是矩阵乘法）
+print(a ** 2)     # [1 4 9]  平方
+print(np.sqrt(a)) # [1. 1.41 1.73] 开方
+print(a.mean())   # 2.0  平均值
+print(a.sum())    # 6    总和
+print(a.max())    # 3    最大值
+```
+
+### 3.4 索引和切片
+
+```python
+arr = np.array([10, 20, 30, 40, 50])
+
+print(arr[0])      # 10   第一个
+print(arr[-1])     # 50   最后一个
+print(arr[1:4])    # [20 30 40]  第2到第4个
+print(arr[:3])     # [10 20 30]  前3个
+print(arr[::2])    # [10 30 50]  隔一个取一个
+
+# 二维数组索引
+matrix = np.array([[1, 2, 3],
+                   [4, 5, 6],
+                   [7, 8, 9]])
+
+print(matrix[1, 2])    # 6   第2行第3列
+print(matrix[0, :])    # [1 2 3]  第1行所有列
+print(matrix[:, 1])    # [2 5 8]  所有行第2列
+print(matrix[:2, :2])  # [[1 2]  前2行前2列
+                       #  [4 5]]
+```
+
+### 3.5 广播（Broadcasting）
+
+Numpy 最强大的特性之一：形状不同的数组也能做运算。
+
+```python
+arr = np.array([[1, 2, 3],
+                [4, 5, 6]])
+
+print(arr + 10)    # 每个元素都 +10
+# [[11 12 13]
+#  [14 15 16]]
+
+print(arr * 2)     # 每个元素都 ×2
+# [[ 2  4  6]
+#  [ 8 10 12]]
+```
+
+### 3.6 今日练习
+
+```python
+# 练习1：创建一个 5x5 的单位矩阵（对角线为1，其余为0）
+identity = np.eye(5)
+# 或者：np.identity(5)
+
+# 练习2：生成 0 到 100 之间所有奇数的数组
+odds = np.arange(1, 100, 2)
+
+# 练习3：创建一个 4x4 的随机矩阵，计算每一列的平均值
+mat = np.random.randn(4, 4)
+col_means = mat.mean(axis=0)   # axis=0 按列，axis=1 按行
+```
+
+---
+
+## 📅 Day 4：Pandas 入门
+
+### 4.1 Series 和 DataFrame
+
+Pandas 的两个核心概念：
+
+```python
+import pandas as pd
+
+# Series —— 一列数据（像 Excel 的一列）
+s = pd.Series([85, 92, 78, 96], name="成绩")
+print(s)
+# 0    85
+# 1    92
+# 2    78
+# 3    96
+# Name: 成绩, dtype: int64
+
+# DataFrame —— 一张表格（像 Excel 的一个 sheet）
+data = {
+    "姓名": ["张三", "李四", "王五"],
+    "年龄": [25, 30, 28],
+    "城市": ["北京", "上海", "广州"]
+}
+df = pd.DataFrame(data)
+print(df)
+#    姓名  年龄  城市
+# 0  张三  25  北京
+# 1  李四  30  上海
+# 2  王五  28  广州
+```
+
+### 4.2 读取 CSV 文件
+
+```python
+# 读取 CSV
+df = pd.read_csv("data.csv")
+
+# 如果你没有 CSV，先下载 Titanic 数据
+# Titanic 是 Kaggle 最经典的数据集，点这个链接下载：
+# https://www.kaggle.com/c/titanic/data (下载 train.csv)
+
+# 或者用 Seaborn 自带的 Titanic 数据集
+import seaborn as sns
+df = sns.load_dataset("titanic")
+```
+
+### 4.3 查看数据
+
+```python
+# 先把 Titanic 加载进来
+import seaborn as sns
+df = sns.load_dataset("titanic")
+
+# === 数据概览 ===
+df.head(10)         # 看前10行（默认5行）
+df.tail()           # 看后5行
+df.sample(5)        # 随机抽5行
+df.shape            # (行数, 列数)
+df.info()           # 每列的数据类型、非空数量
+df.describe()       # 数值列的统计摘要（均值、标准差、分位数等）
+df.columns          # 所有列名
+df.dtypes           # 每列的数据类型
+
+# === 列选择 ===
+df["age"]           # 选一列，返回 Series
+df[["age", "sex", "fare"]]  # 选多列，返回 DataFrame
+df.age              # 也可以这样（但不推荐，容易和列名冲突）
+
+# === 行筛选（布尔索引）===
+df[df["age"] > 30]              # 年龄大于30的
+df[(df["age"] > 20) & (df["sex"] == "female")]  # 女且大于20
+df[df["survived"] == 1]          # 幸存者
+```
+
+### 4.4 基本统计
+
+```python
+df["age"].mean()       # 平均年龄
+df["fare"].median()    # 票价中位数
+df["fare"].min()       # 最低票价
+df["fare"].max()       # 最高票价
+df["fare"].std()       # 标准差（数据分布的离散程度）
+df["age"].value_counts()       # 每个年龄出现次数
+df["sex"].value_counts()       # 男女各多少人
+df["sex"].value_counts(normalize=True)  # 男女占比
+```
+
+### 4.5 今日练习
+
+```python
+# 加载 Titanic 数据集
+import seaborn as sns
+df = sns.load_dataset("titanic")
+
+# 练习1：看前10行数据，了解有哪些列
+print(df.head(10))
+
+# 练习2：一共有多少人？男/女各多少？
+print(f"总人数：{len(df)}")
+print(df["sex"].value_counts())
+
+# 练习3：存活率是多少？
+print(f"存活率：{df['survived'].mean():.2%}")  # 38.38%
+
+# 练习4：头等舱乘客的平均票价是多少？
+first_class = df[df["pclass"] == 1]
+print(first_class["fare"].mean())
+```
+
+---
+
+## 📅 Day 5：Pandas 进阶
+
+### 5.1 缺失值处理
+
+现实数据永远有缺失值，必须学会处理。
+
+```python
+import seaborn as sns
+df = sns.load_dataset("titanic")
+
+# 1. 看看哪些列有缺失值
+print(df.isna().sum())   # isna() = is null，sum() 统计True个数
+
+# 2. 缺失比例
+print(df.isna().mean() * 100)  # 百分比
+
+# 3. 处理方式一：删除缺失值（简单粗暴）
+df_clean = df.dropna()                     # 删掉所有含缺失的行
+df_clean = df.dropna(subset=["age"])        # 只删 age 为空的
+df_clean = df.dropna(thresh=5)             # 非空值少于5个才删
+
+# 4. 处理方式二：填充缺失值（更常用）
+df["age"].fillna(df["age"].median(), inplace=True)   # 用中位数填充年龄
+# inplace=True 表示直接在原数据上修改，不用赋值
+
+df["embarked"].fillna(df["embarked"].mode()[0], inplace=True)  # 用众数填充登船港口
+```
+
+### 5.2 groupby 分组聚合
+
+这是数据分析最常用的操作：按某个字段分组，然后聚合计算。
+
+```python
+# 按性别分组，看存活率
+df.groupby("sex")["survived"].mean()
+# sex
+# female    0.742038
+# male      0.188908
+
+# 按船舱等级分组，看平均年龄和票价
+df.groupby("pclass").agg({
+    "age": "mean",
+    "fare": "mean",
+    "survived": "mean"
+})
+#          age       fare  survived
+# pclass
+# 1       38.23  84.154687  0.629630
+# 2       29.88  20.662183  0.472826
+# 3       25.14  13.675550  0.242363
+
+# 多级分组：按性别 + 船舱等级
+df.groupby(["sex", "pclass"])["survived"].mean()
+# sex     pclass
+# female  1         0.968085
+#         2         0.921053
+#         3         0.500000
+# male    1         0.368852
+#         2         0.157407
+#         3         0.135447
+```
+
+> 🔍 **看出来了吗？** 头等舱女性存活率 96.8%，三等舱男性仅 13.5%。这就是数据分析的价值——从数据中发现规律。
+
+### 5.3 数据合并
+
+```python
+# concat —— 上下拼接
+df1 = pd.DataFrame({"A": [1, 2], "B": [3, 4]})
+df2 = pd.DataFrame({"A": [5, 6], "B": [7, 8]})
+pd.concat([df1, df2])   # 纵向拼接
+
+# merge —— 类似 SQL 的 JOIN
+left = pd.DataFrame({"id": [1, 2, 3], "name": ["A", "B", "C"]})
+right = pd.DataFrame({"id": [1, 2, 4], "score": [90, 85, 95]})
+pd.merge(left, right, on="id", how="inner")  # 内连接
+pd.merge(left, right, on="id", how="left")   # 左连接
+```
+
+### 5.4 今日练习
+
+```python
+import seaborn as sns
+df = sns.load_dataset("titanic")
+
+# 练习1：看哪些列有缺失值，缺失比例多少
+print(df.isna().mean() * 100)
+
+# 练习2：用中位数填充年龄列的缺失值
+df["age"].fillna(df["age"].median(), inplace=True)
+
+# 练习3：按船舱等级分组，看存活人数和总人数
+result = df.groupby("pclass")["survived"].agg(["sum", "count", "mean"])
+print(result)
+
+# 练习4：算一下，头等舱女性中，儿童的存活率是多少？
+female_first = df[(df["sex"] == "female") & (df["pclass"] == 1)]
+child_female_first = female_first[female_first["age"] < 18]
+print(f"儿童存活率：{child_female_first['survived'].mean():.2%}")
+```
+
+---
+
+## 📅 Day 6：数据可视化入门
+
+### 6.1 Matplotlib 基础
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 让图表显示中文
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+df = sns.load_dataset("titanic")
+
+# === 折线图 ===
+plt.figure(figsize=(10, 5))
+plt.plot([1, 2, 3, 4], [10, 20, 15, 25], marker="o")
+plt.title("折线图示例")
+plt.xlabel("X轴")
+plt.ylabel("Y轴")
+plt.show()
+
+# === 直方图（分布） ===
+plt.figure(figsize=(10, 5))
+plt.hist(df["age"].dropna(), bins=30, edgecolor="black", alpha=0.7)
+plt.title("年龄分布")
+plt.xlabel("年龄")
+plt.ylabel("人数")
+plt.show()
+
+# === 柱状图 ===
+survival_by_class = df.groupby("pclass")["survived"].mean()
+plt.figure(figsize=(8, 5))
+plt.bar(survival_by_class.index, survival_by_class.values)
+plt.title("各舱位存活率")
+plt.xlabel("舱位等级")
+plt.ylabel("存活率")
+plt.xticks([1, 2, 3])
+plt.show()
+```
+
+### 6.2 Seaborn 快速出图
+
+`Seaborn` 是 Matplotlib 的升级版，一行代码出专业图表：
+
+```python
+# === 箱线图（看分布和异常值） ===
+plt.figure(figsize=(10, 6))
+sns.boxplot(x="pclass", y="age", data=df)
+plt.title("各舱位年龄分布")
+plt.show()
+
+# === 小提琴图（更精细的分布） ===
+plt.figure(figsize=(10, 6))
+sns.violinplot(x="pclass", y="age", hue="sex", split=True, data=df)
+plt.title("各舱位男女年龄分布")
+plt.show()
+
+# === 散点图 ===
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x="age", y="fare", hue="survived", size="pclass", data=df)
+plt.title("年龄-票价 散点图（颜色=是否存活）")
+plt.show()
+
+# === 热力图（相关性矩阵） ===
+plt.figure(figsize=(10, 8))
+corr = df[["age", "fare", "pclass", "survived", "sibsp", "parch"]].corr()
+sns.heatmap(corr, annot=True, cmap="coolwarm", center=0)
+plt.title("变量相关性热力图")
+plt.show()
+
+# === 计数图 ===
+plt.figure(figsize=(10, 6))
+sns.countplot(x="pclass", hue="survived", data=df)
+plt.title("各舱位幸存/遇难人数")
+plt.show()
+```
+
+### 6.3 今日练习
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.rcParams['font.sans-serif'] = ['SimHei']
+
+df = sns.load_dataset("titanic")
+
+# 练习1：画一个直方图，看票价（fare）的分布
+plt.figure(figsize=(10, 5))
+sns.histplot(df["fare"], bins=50, kde=True)
+plt.title("票价分布")
+plt.xlim(0, 300)
+plt.show()
+
+# 练习2：画一个箱线图，看幸存者和遇难者的年龄分布
+plt.figure(figsize=(8, 5))
+sns.boxplot(x="survived", y="age", data=df)
+plt.title("幸存 vs 遇难 年龄分布")
+plt.show()
+
+# 练习3：画一个热力图，看看哪些因素和存活率相关性最强
+corr = df[["age", "fare", "pclass", "survived", "sibsp", "parch"]].corr()
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr, annot=True, cmap="RdYlBu", center=0)
+plt.title("相关性热力图")
+plt.show()
+# 你会发现 pclass 和 survived 负相关最明显（等级越高数字越小）
+```
+
+---
+
+## 📅 Day 7：综合实战 —— Titanic EDA
+
+> **EDA = Exploratory Data Analysis（探索性数据分析）**  
+> 拿到数据后，第一步永远是先了解数据长什么样。
+
+### 完整 EDA 模板
+
+```python
+# ========== 1. 导入库 ==========
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+sns.set_style("whitegrid")
+
+# ========== 2. 加载数据 ==========
+df = sns.load_dataset("titanic")
+print(f"数据集形状：{df.shape}")
+print(f"列名：{df.columns.tolist()}")
+
+# ========== 3. 数据概览 ==========
+print("\n===== 前5行 =====")
+print(df.head())
+
+print("\n===== 数据类型 =====")
+print(df.info())
+
+print("\n===== 描述性统计 =====")
+print(df.describe())
+
+# ========== 4. 缺失值检查 ==========
+print("\n===== 缺失值 =====")
+print(df.isna().sum())
+print(f"\n缺失比例：\n{df.isna().mean() * 100}")
+
+# ========== 5. 处理缺失值 ==========
+df["age"].fillna(df["age"].median(), inplace=True)
+df["embarked"].fillna(df["embarked"].mode()[0], inplace=True)
+# deck 缺失太多，删掉这列
+df.drop("deck", axis=1, inplace=True)
+
+# ========== 6. 单变量分析 ==========
+fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+
+sns.countplot(x="survived", data=df, ax=axes[0, 0])
+axes[0, 0].set_title("存活情况（0=遇难，1=幸存）")
+
+sns.countplot(x="sex", data=df, ax=axes[0, 1])
+axes[0, 1].set_title("性别分布")
+
+sns.countplot(x="pclass", data=df, ax=axes[0, 2])
+axes[0, 2].set_title("舱位分布")
+
+sns.histplot(df["age"], bins=30, kde=True, ax=axes[1, 0])
+axes[1, 0].set_title("年龄分布")
+
+sns.histplot(df["fare"], bins=50, kde=True, ax=axes[1, 1])
+axes[1, 1].set_title("票价分布")
+axes[1, 1].set_xlim(0, 300)
+
+sns.countplot(x="embarked", data=df, ax=axes[1, 2])
+axes[1, 2].set_title("登船港口分布")
+
+plt.tight_layout()
+plt.show()
+
+# ========== 7. 双变量分析 ==========
+fig, axes = plt.subplots(2, 2, figsize=(14, 12))
+
+# 性别 vs 存活
+sns.barplot(x="sex", y="survived", data=df, ax=axes[0, 0])
+axes[0, 0].set_title("性别与存活率")
+
+# 舱位 vs 存活
+sns.barplot(x="pclass", y="survived", data=df, ax=axes[0, 1])
+axes[0, 1].set_title("舱位与存活率")
+
+# 年龄 vs 存活（箱线图）
+sns.boxplot(x="survived", y="age", data=df, ax=axes[1, 0])
+axes[1, 0].set_title("年龄与存活关系")
+
+# 票价 vs 存活（箱线图）
+sns.boxplot(x="survived", y="fare", data=df, ax=axes[1, 1])
+axes[1, 1].set_title("票价与存活关系")
+axes[1, 1].set_ylim(0, 200)
+
+plt.tight_layout()
+plt.show()
+
+# ========== 8. 交叉分析 ==========
+# 性别 + 舱位 + 存活率
+pivot = df.pivot_table(
+    values="survived",
+    index="sex",
+    columns="pclass",
+    aggfunc="mean"
+)
+print("\n===== 性别 × 舱位 × 存活率 =====")
+print(pivot)
+
+plt.figure(figsize=(8, 5))
+sns.heatmap(pivot, annot=True, cmap="YlOrRd", fmt=".2%")
+plt.title("性别 × 舱位 存活率热力图")
+plt.show()
+
+# ========== 9. 关键发现总结 ==========
+print("""
+========== 关键发现 ==========
+1. 女性存活率远高于男性（74% vs 19%）
+2. 头等舱存活率远高于三等舱（63% vs 24%）
+3. 头等舱女性存活率高达 97%
+4. 三等舱男性存活率仅 13.5%
+5. 票价越高、存活率越高
+6. 年龄对存活率影响不明显（同舱位下）
+=============================
+""")
+```
+
+---
+
+## 📅 本周复习自测
+
+学完这一周，你应该能回答以下问题：
+
+| 问题 | 你的答案 |
+|------|---------|
+| Python 的 list 和 dict 有什么区别？ | |
+| 什么是列表推导式？写一个例子 | |
+| Numpy 比普通 list 快在哪里？ | |
+| DataFrame 是什么？怎么选一列数据？ | |
+| groupby 是干什么用的？ | |
+| 缺失值怎么处理？ | |
+| 跑通 Titanic 的 EDA 了吗？ | |
+
+---
+
+## 🔜 下周预习
+
+第2周我们将进入**机器学习基础**：
+- 什么是机器学习？（监督学习/无监督学习）
+- 特征工程（把原始数据变成模型能用的格式）
+- 训练集/测试集划分
+- 逻辑回归（分类）和线性回归（预测）
+- 评估模型好坏
+- 实战：用 Titanic 数据训练一个「生死预测器」
+
+> 如果本周内容你觉得太简单，可以提前看：  
+> **Scikit-Learn 官方教程**: https://scikit-learn.org/stable/tutorial/basic/tutorial.html
+
+---
+
+## 💡 学习技巧
+
+1. **不要看视频，要动手** — 看 10 遍不如手敲 1 遍
+2. **遇到问题先自己想 10 分钟**，再去 Google（这个习惯很重要）
+3. **每天写代码** — 哪怕只是 15 分钟，保持手感
+4. **善用 ChatGPT/Claude** — 遇到报错直接把错误信息复制进去问
+5. **记笔记** — 用自己的话把概念写一遍，理解会深很多

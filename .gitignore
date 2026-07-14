@@ -1,0 +1,14 @@
+﻿# Jupyter 配置
+.jupyter/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# SSH 密钥（如果有）
+id_ed25519
+id_ed25519.pub
+
+# VS Code
+.vscode/
