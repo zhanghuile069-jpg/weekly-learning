@@ -6,7 +6,10 @@ __pycache__/
 *.pyc
 *.pyo
 
-# SSH 密钥（如果有）
+# Jupyter checkpoint
+.ipynb_checkpoints/
+
+# SSH 密钥
 id_ed25519
 id_ed25519.pub
 
